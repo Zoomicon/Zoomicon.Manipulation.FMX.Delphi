@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{D042DE94-A26A-4CB3-BD09-83214165D2C9}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Zoomicon_Manipulation_FMX">
+        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX.dproj"/>
+    </Target>
+    <Target Name="Zoomicon_Manipulation_FMX:Clean">
+        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Zoomicon_Manipulation_FMX:Make">
+        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Zoomicon_Manipulation_FMX"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Zoomicon_Manipulation_FMX:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Zoomicon_Manipulation_FMX:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
