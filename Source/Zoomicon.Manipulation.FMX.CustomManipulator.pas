@@ -1130,7 +1130,7 @@ procedure Register;
 begin
   GroupDescendentsWith(TCustomManipulator, TControl);
   RegisterClasses;
-  //RegisterComponents('Zoomicon', [TCustomManipulator]);
+  //RegisterComponents('Zoomicon', [TCustomManipulator]); //registering only TManipulator, which is a descendent
 end;
 
 initialization
