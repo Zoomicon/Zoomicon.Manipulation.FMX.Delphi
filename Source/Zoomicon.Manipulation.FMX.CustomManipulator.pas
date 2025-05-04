@@ -1121,6 +1121,8 @@ end;
 
 {$ENDREGION}
 
+{$region 'Registration'}
+
 procedure RegisterClasses;
 begin
   RegisterFmxClasses([TCustomManipulator]); //register for persistence (in case they're used standalone)
@@ -1132,6 +1134,8 @@ begin
   RegisterClasses;
   //RegisterComponents('Zoomicon', [TCustomManipulator]); //registering only TManipulator, which is a descendent
 end;
+
+{$endregion}
 
 initialization
   RegisterClasses; //don't call Register here, it's called by the IDE automatically on a package installation (fails at runtime)

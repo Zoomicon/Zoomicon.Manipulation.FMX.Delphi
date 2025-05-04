@@ -30,6 +30,8 @@ implementation
 
 {$R *.fmx}
 
+{$region 'Registration'}
+
 procedure RegisterSerializationClasses;
 begin
   RegisterFmxClasses([TManipulator]);
@@ -41,6 +43,8 @@ begin
   RegisterSerializationClasses;
   RegisterComponents('Zoomicon', [TManipulator]);
 end;
+
+{$endregion}
 
 initialization
   RegisterSerializationClasses; //don't call Register here, it's called by the IDE automatically on a package installation (fails at runtime)
