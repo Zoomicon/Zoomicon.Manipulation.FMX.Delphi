@@ -2,10 +2,10 @@ unit Zoomicon.Manipulation.FMX.Selector;
 
 interface
   uses
-    System.Classes, //for TComponent
+    System.Classes, //for TComponent, RegisterFmxClasses
     System.Types, //for TPointF
     FMX.Objects, //for TSelection
-    FMX.Controls; //for TControlList
+    FMX.Controls; //for TControlList, TControl
 
 type
   TRectFPredicate = reference to function(Rectangle: TRectF): Boolean;
@@ -84,9 +84,8 @@ type
 
   {$ENDREGION .................................................................}
 
-  procedure Register;
-
 implementation
+  {$region 'Used units'}
   uses
     Zoomicon.Generics.Functors, //for TF
     Zoomicon.Generics.Collections, //for TListEx
@@ -98,210 +97,203 @@ implementation
     FMX.Types, //for RegisterFmxClasses
     System.Math, //for Min
     System.SysUtils; //for Format
+  {$endregion}
 
-{$REGION 'TLocationSelector' --------------------------------------------------}
+  {$REGION 'TLocationSelector' ------------------------------------------------}
 
-constructor TLocationSelector.Create(AOwner: TComponent);
-begin
-  inherited;
-  OnTrack := HandleChangeTracking;
-  OnChange := HandleChange;
-end;
-
-procedure TLocationSelector.HandleChangeTracking(Sender: TObject; var X, Y: Single);
-begin
-  var PressedPos := PressedPosition;
-  var ParentSize := ParentControl.Size.Size;
-  var DX := X - PressedPos.X/2 - ParentSize.Width/2;
-  var DY := Y - PressedPos.X/2 - ParentSize.Height/2;
-
-  if not FChangeCanceled then
-    begin
-    if Assigned(OnParentMoving) then
-      OnParentMoving(Self, DX, DY, FChangeCanceled);
-
-    if FChangeCanceled then //must do this right after calling OnParentMoving
-      FRestorePosition := Position.Point - PointF(DX, DY)
-    else
-      begin
-      with ParentControl.Position do
-        Point := Point + PointF(DX, DY); //Move parent control
-
-      if Assigned(OnParentMoved) then
-        OnParentMoved(Self, DX, DY);
-      end;
-    end
-end;
-
-procedure TLocationSelector.HandleChange(Sender: TObject);
-begin
-  if FChangeCanceled then
-    begin
-    Position.Point := FRestorePosition;
-    FChangeCanceled := True;
-    end;
-end;
-
-{$ENDREGION ...................................................................}
-
-{$REGION 'TAreaSelector' ------------------------------------------------------}
-
-function TAreaSelector.DoGetUpdateRect: TRectF; //Fix for TSelection's calculation for the case we have one or more nested TScaledLayout in parent hierarchy
-begin
-  Result := inherited;
-  with AbsoluteScale do //avoids calling AbsoluteScale property getter method twice (for AbsoluteScale.X and AbsoluteScale.Y). Equivalent to using an LAbsoluteScale local variable
-    Result.Inflate((GripSize + 1) * X, (GripSize + 1) * Y); //not sure if that is too big, however it works compared to just using Scale as TSelection does
-end;
-
-{$region 'Get'}
-
-function TAreaSelector.GetSelectedArea: TRectF;
-begin
-  var rect := BoundsRect; //TODO: if reusing AreaSelector without reparenting it, should allow setting its "user/target" control to do coordinate conversion (it should provide property to set what control it's using as base and it should provide mapped bounds for that as special property)
-  var d := GripSize/1.3;
-  rect.Inflate(-d, -d, -d, -d); //Inflating by -SELECTION_GRIP_SIZE * 1.5 to avoid strange issue where dragging from the part of the knob that is over the object does selection update
-  result := rect;
-end;
-
-function TAreaSelector.GetControls(const RectPicker: TRectFPredicate): TControlList;
-begin
-  if not Assigned(RectPicker) or (Parent = nil) then exit(nil);
-
-  result := TListEx<TControl>.GetAll(ParentControl.Controls,
-    function(AControl: TControl): Boolean
-    begin
-      result := (AControl <> Self) //not selecting ourselves
-                and (not AControl.SubComponent) //not selecting subcomponents //TODO: maybe add property for that, defaulting to true
-                and RectPicker(AControl.BoundsRect);
-    end
-  );
-
-  if OnlyFromTop and (result.Count > 1) then
+  constructor TLocationSelector.Create(AOwner: TComponent);
   begin
-    var TopOneSelected := result.Last; //the last one in the Components list is the one on top in the Z-Order
-    result.Clear; //clear the previously calculated result, avoid creating new list (would have to free previous one)
-    result.Add(TopOneSelected); //return single result in a list
+    inherited;
+    OnTrack := HandleChangeTracking;
+    OnChange := HandleChange;
   end;
-end;
 
-function TAreaSelector.GetContained: TControlList;
-begin
-  var TheBounds := BoundsRect;
-  result := GetControls(
-      function (ARect: TRectF): Boolean
+  procedure TLocationSelector.HandleChangeTracking(Sender: TObject; var X, Y: Single);
+  begin
+    var PressedPos := PressedPosition;
+    var ParentSize := ParentControl.Size.Size;
+    var DX := X - PressedPos.X/2 - ParentSize.Width/2;
+    var DY := Y - PressedPos.X/2 - ParentSize.Height/2;
+
+    if not FChangeCanceled then
       begin
-        result := TheBounds.Contains(ARect);
+      if Assigned(OnParentMoving) then
+        OnParentMoving(Self, DX, DY, FChangeCanceled);
+
+      if FChangeCanceled then //must do this right after calling OnParentMoving
+        FRestorePosition := Position.Point - PointF(DX, DY)
+      else
+        begin
+        with ParentControl.Position do
+          Point := Point + PointF(DX, DY); //Move parent control
+
+        if Assigned(OnParentMoved) then
+          OnParentMoved(Self, DX, DY);
+        end;
+      end
+  end;
+
+  procedure TLocationSelector.HandleChange(Sender: TObject);
+  begin
+    if FChangeCanceled then
+      begin
+      Position.Point := FRestorePosition;
+      FChangeCanceled := True;
+      end;
+  end;
+
+  {$ENDREGION .................................................................}
+
+  {$REGION 'TAreaSelector' ----------------------------------------------------}
+
+  function TAreaSelector.DoGetUpdateRect: TRectF; //Fix for TSelection's calculation for the case we have one or more nested TScaledLayout in parent hierarchy
+  begin
+    Result := inherited;
+    with AbsoluteScale do //avoids calling AbsoluteScale property getter method twice (for AbsoluteScale.X and AbsoluteScale.Y). Equivalent to using an LAbsoluteScale local variable
+      Result.Inflate((GripSize + 1) * X, (GripSize + 1) * Y); //not sure if that is too big, however it works compared to just using Scale as TSelection does
+  end;
+
+  {$region 'Get'}
+
+  function TAreaSelector.GetSelectedArea: TRectF;
+  begin
+    var rect := BoundsRect; //TODO: if reusing AreaSelector without reparenting it, should allow setting its "user/target" control to do coordinate conversion (it should provide property to set what control it's using as base and it should provide mapped bounds for that as special property)
+    var d := GripSize/1.3;
+    rect.Inflate(-d, -d, -d, -d); //Inflating by -SELECTION_GRIP_SIZE * 1.5 to avoid strange issue where dragging from the part of the knob that is over the object does selection update
+    result := rect;
+  end;
+
+  function TAreaSelector.GetControls(const RectPicker: TRectFPredicate): TControlList;
+  begin
+    if not Assigned(RectPicker) or (Parent = nil) then exit(nil);
+
+    result := TListEx<TControl>.GetAll(ParentControl.Controls,
+      function(AControl: TControl): Boolean
+      begin
+        result := (AControl <> Self) //not selecting ourselves
+                  and (not AControl.SubComponent) //not selecting subcomponents //TODO: maybe add property for that, defaulting to true
+                  and RectPicker(AControl.BoundsRect);
       end
     );
-end;
 
-function TAreaSelector.GetIntersected: TControlList;
-begin
-  var TheBounds := BoundsRect;
-  result := GetControls(
-      function (ARect: TRectF): Boolean
-      begin
-        result := TheBounds.IntersectsWith(ARect);
-      end
-    );
-end;
-
-function TAreaSelector.GetSelected: TControlList;
-begin
-  case FSelectionMode of
-    asmoContained: result := GetContained;
-    asmoIntersected: result := GetIntersected;
-  else
-    result := nil;
-  end;
-end;
-
-{$endregion}
-
-{$region 'Count'}
-
-function TAreaSelector.GetControlCount(const RectPicker: TRectFPredicate): Integer;
-begin
-  if not Assigned(RectPicker) or (Parent = nil) then exit(0);
-
-  result := TListEx<TControl>.GetCount(ParentControl.Controls,
-    function(AControl: TControl): Boolean
+    if OnlyFromTop and (result.Count > 1) then
     begin
-      result := (AControl <> Self) //not selecting ourselves
-                and RectPicker(AControl.BoundsRect);
-    end
-  );
-
-  if OnlyFromTop and (result > 1) then
-    result := 1;
-end;
-
-function TAreaSelector.GetContainedCount: Integer;
-begin
-  var TheBounds := BoundsRect;
-  result := GetControlCount(
-      function (ARect: TRectF): Boolean
-      begin
-        result := TheBounds.Contains(ARect);
-      end
-    );
-end;
-
-function TAreaSelector.GetIntersectedCount: Integer;
-begin
-  var TheBounds := BoundsRect;
-  result := GetControlCount(
-      function (ARect: TRectF): Boolean
-      begin
-        result := TheBounds.IntersectsWith(ARect);
-      end
-    );
-end;
-
-function TAreaSelector.GetSelectedCount: Integer;
-begin
-  case FSelectionMode of
-    asmoContained: result := GetContainedCount;
-    asmoIntersected: result := GetIntersectedCount;
-  else
-    result := 0;
+      var TopOneSelected := result.Last; //the last one in the Components list is the one on top in the Z-Order
+      result.Clear; //clear the previously calculated result, avoid creating new list (would have to free previous one)
+      result.Add(TopOneSelected); //return single result in a list
+    end;
   end;
-end;
 
-{$endregion}
+  function TAreaSelector.GetContained: TControlList;
+  begin
+    var TheBounds := BoundsRect;
+    result := GetControls(
+        function (ARect: TRectF): Boolean
+        begin
+          result := TheBounds.Contains(ARect);
+        end
+      );
+  end;
 
-{$region 'Events'}
+  function TAreaSelector.GetIntersected: TControlList;
+  begin
+    var TheBounds := BoundsRect;
+    result := GetControls(
+        function (ARect: TRectF): Boolean
+        begin
+          result := TheBounds.IntersectsWith(ARect);
+        end
+      );
+  end;
 
-procedure TAreaSelector.MouseMove(Shift: TShiftState; X, Y: Single);
-begin
-  inherited;
+  function TAreaSelector.GetSelected: TControlList;
+  begin
+    case FSelectionMode of
+      asmoContained: result := GetContained;
+      asmoIntersected: result := GetIntersected;
+    else
+      result := nil;
+    end;
+  end;
 
-  Hint := Format(STR_FORMAT_HINT, [Width, Height]); //set area selection size as hint (tooltip) - depends on "ShowHint" property (defaults to true) if it will be displayed
+  {$endregion}
 
-  //TODO: VCL has Application.ActivateHint to force show the hint, but FMX doesn't. There's Application.SetHint private method which uses THintAction, but using similar code doesn't seem to do the job
-  //TODO: There's issue with hint not being displayed when user clicks on same-sized object to wrap AreaSelection around it. Seems they have to resize the AreaSelection first or move the mouse outside and back inside it to show the hint. Tried setting the Hint to empty first or to something dummy (and call Application.ProcessMessages in between), but doesn't work either
-end;
+  {$region 'Count'}
 
-{$endregion}
+  function TAreaSelector.GetControlCount(const RectPicker: TRectFPredicate): Integer;
+  begin
+    if not Assigned(RectPicker) or (Parent = nil) then exit(0);
 
-{$ENDREGION ...................................................................}
+    result := TListEx<TControl>.GetCount(ParentControl.Controls,
+      function(AControl: TControl): Boolean
+      begin
+        result := (AControl <> Self) //not selecting ourselves
+                  and RectPicker(AControl.BoundsRect);
+      end
+    );
 
-{$REGION 'Registration' -------------------------------------------------------}
+    if OnlyFromTop and (result > 1) then
+      result := 1;
+  end;
 
-procedure RegisterSerializationClasses;
-begin
-  RegisterFmxClasses([TLocationSelector, TAreaSelector]);
-end;
+  function TAreaSelector.GetContainedCount: Integer;
+  begin
+    var TheBounds := BoundsRect;
+    result := GetControlCount(
+        function (ARect: TRectF): Boolean
+        begin
+          result := TheBounds.Contains(ARect);
+        end
+      );
+  end;
 
-procedure Register;
-begin
-  GroupDescendentsWith(TLocationSelector, TControl);
-  GroupDescendentsWith(TAreaSelector, TControl);
-  RegisterSerializationClasses;
-  RegisterComponents('Zoomicon', [TLocationSelector, TAreaSelector]);
-end;
+  function TAreaSelector.GetIntersectedCount: Integer;
+  begin
+    var TheBounds := BoundsRect;
+    result := GetControlCount(
+        function (ARect: TRectF): Boolean
+        begin
+          result := TheBounds.IntersectsWith(ARect);
+        end
+      );
+  end;
 
-{$ENDREGION ...................................................................}
+  function TAreaSelector.GetSelectedCount: Integer;
+  begin
+    case FSelectionMode of
+      asmoContained: result := GetContainedCount;
+      asmoIntersected: result := GetIntersectedCount;
+    else
+      result := 0;
+    end;
+  end;
+
+  {$endregion}
+
+  {$region 'Events'}
+
+  procedure TAreaSelector.MouseMove(Shift: TShiftState; X, Y: Single);
+  begin
+    inherited;
+
+    Hint := Format(STR_FORMAT_HINT, [Width, Height]); //set area selection size as hint (tooltip) - depends on "ShowHint" property (defaults to true) if it will be displayed
+
+    //TODO: VCL has Application.ActivateHint to force show the hint, but FMX doesn't. There's Application.SetHint private method which uses THintAction, but using similar code doesn't seem to do the job
+    //TODO: There's issue with hint not being displayed when user clicks on same-sized object to wrap AreaSelection around it. Seems they have to resize the AreaSelection first or move the mouse outside and back inside it to show the hint. Tried setting the Hint to empty first or to something dummy (and call Application.ProcessMessages in between), but doesn't work either
+  end;
+
+  {$endregion}
+
+  {$ENDREGION .................................................................}
+
+  {$REGION 'Registration' -----------------------------------------------------}
+
+  procedure RegisterSerializationClasses;
+  begin
+    RegisterFmxClasses([TLocationSelector, TAreaSelector], [TControl]);
+  end;
+
+  {$ENDREGION .................................................................}
 
 initialization
   RegisterSerializationClasses; //don't call Register here, it's called by the IDE automatically on a package installation (fails at runtime)

@@ -1,4 +1,4 @@
-package Zoomicon.Manipulation.FMX;
+package Zoomicon.Manipulation.FMX_IDE;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -27,19 +27,14 @@ package Zoomicon.Manipulation.FMX;
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
-{$RUNONLY ON}
+{$DESIGNONLY ON}
 
 requires
   rtl,
-  fmx,
-  Zoomicon.Helpers.FMX,
-  Zoomicon.Generics;
+  //DesignIDE, //for DesignIntf unit
+  Zoomicon.Manipulation.FMX; //for Zoomicon.Manipulation.FMX.* units
 
 contains
-  Zoomicon.Manipulation.FMX.Selector in 'Zoomicon.Manipulation.FMX.Selector.pas',
-  Zoomicon.Manipulation.FMX.CustomManipulator in 'Zoomicon.Manipulation.FMX.CustomManipulator.pas' {CustomManipulator: TFrame},
-  Zoomicon.Manipulation.FMX.Manipulator in 'Zoomicon.Manipulation.FMX.Manipulator.pas' {Manipulator: TFrame};
-
-{$Description 'Zoomicon Manipulation FMX Controls'}
+  Zoomicon.Manipulation.FMX.Registration in 'Registration\Zoomicon.Manipulation.FMX.Registration.pas';
 
 end.

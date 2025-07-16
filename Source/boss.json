@@ -1,6 +1,6 @@
 {
   "name": "Zoomicon.Manipulation.FMX",
-  "version": "3.0",
+  "version": "3.1",
 
   "description": "Manipulation User Interface controls for Delphi FMX",
 
@@ -20,7 +20,8 @@
   "main": "Zoomicon.Manipulation.FMX.dproj",
 
   "projects": [
-    "Zoomicon.Manipulation.FMX.dproj"
+    "Zoomicon.Manipulation.FMX.dproj",
+    "Zoomicon.Manipulation.FMX_IDE.dproj"
   ],
  
   "files": [

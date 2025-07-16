@@ -6,6 +6,9 @@
         <Projects Include="Source\Zoomicon.Manipulation.FMX.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Source\Zoomicon.Manipulation.FMX_IDE.dproj">
+            <Dependencies>Source\Zoomicon.Manipulation.FMX.dproj</Dependencies>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="Zoomicon_Manipulation_FMX:Make">
         <MSBuild Projects="Source\Zoomicon.Manipulation.FMX.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Zoomicon_Manipulation_FMX_IDE" DependsOnTargets="Zoomicon.Manipulation.FMX">
+        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX_IDE.dproj"/>
+    </Target>
+    <Target Name="Zoomicon_Manipulation_FMX_IDE:Clean" DependsOnTargets="Zoomicon.Manipulation.FMX:Clean">
+        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX_IDE.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Zoomicon_Manipulation_FMX_IDE:Make" DependsOnTargets="Zoomicon.Manipulation.FMX:Make">
+        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX_IDE.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Zoomicon_Manipulation_FMX"/>
+        <CallTarget Targets="Zoomicon_Manipulation_FMX;Zoomicon_Manipulation_FMX_IDE"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Zoomicon_Manipulation_FMX:Clean"/>
+        <CallTarget Targets="Zoomicon_Manipulation_FMX:Clean;Zoomicon_Manipulation_FMX_IDE:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Zoomicon_Manipulation_FMX:Make"/>
+        <CallTarget Targets="Zoomicon_Manipulation_FMX:Make;Zoomicon_Manipulation_FMX_IDE:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
