@@ -9,7 +9,7 @@
 
   "dependencies": {
       "github.com/zoomicon/zoomicon.generics.delphi": ">=3.0.0",
-      "github.com/zoomicon/zoomicon.helpers.fmx.delphi": ">=3.0.0"
+      "github.com/zoomicon/zoomicon.helpers.fmx.delphi": ">=3.2.0"
   },
 
   "repository": {
