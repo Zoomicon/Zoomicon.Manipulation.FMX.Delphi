@@ -31,8 +31,9 @@ package Zoomicon.Manipulation.FMX_IDE;
 
 requires
   rtl,
-  //DesignIDE, //for DesignIntf unit
-  Zoomicon.Manipulation.FMX; //for Zoomicon.Manipulation.FMX.* units
+  Zoomicon.Manipulation.FMX;
+
+  //Note: add DesignIDE to requires clause if DesignIntf unit is used in code
 
 contains
   Zoomicon.Manipulation.FMX.Registration in 'Registration\Zoomicon.Manipulation.FMX.Registration.pas';
