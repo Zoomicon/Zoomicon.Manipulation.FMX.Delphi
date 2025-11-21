@@ -5,8 +5,7 @@
 	"homepage": "",
 	"mainsrc": "",
 	"projects": [
-		"Source/Zoomicon.Manipulation.FMX.dproj",
-		"Source/Zoomicon.Manipulation.FMX_IDE.dproj"
+		"Source/Zoomicon.Manipulation.FMX.dproj"
 	],
 	"dependencies": {
 		"github.com/zoomicon/zoomicon.generics.delphi": ">=3.3.0",
