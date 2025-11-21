@@ -32,8 +32,8 @@ package Zoomicon.Manipulation.FMX;
 requires
   rtl,
   fmx,
-  Zoomicon.Helpers.FMX,
-  Zoomicon.Generics;
+  Zoomicon.Helpers.FMX{BOSS},
+  Zoomicon.Generics{BOSS};
 
 contains
   Zoomicon.Manipulation.FMX.Selector in 'Zoomicon.Manipulation.FMX.Selector.pas',

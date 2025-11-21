@@ -1,30 +1,15 @@
 {
-  "name": "Zoomicon.Manipulation.FMX",
-  "version": "3.3",
-
-  "description": "Manipulation User Interface controls for Delphi FMX",
-
-  "author": "George Birbilis - Zoomicon.com",
-  "license": "MIT",
-
-  "dependencies": {
-    "github.com/zoomicon/zoomicon.generics.delphi": ">=3.1.0",
-    "github.com/zoomicon/zoomicon.helpers.fmx.delphi": ">=3.2.0"
-  },
-
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Zoomicon/Zoomicon.Manipulation.FMX.Delphi"
-  },
-
-  "main": "Source/Zoomicon.Manipulation.FMX.dproj",
-
-  "projects": [
-    "Source/Zoomicon.Manipulation.FMX.dproj",
-    "Source/Zoomicon.Manipulation.FMX_IDE.dproj"
-  ],
-
-  "files": [
-    "Source/**/*.pas"
-  ]
+	"name": "Zoomicon.Manipulation.FMX",
+	"description": "Manipulation User Interface controls for Delphi FMX",
+	"version": "3.4",
+	"homepage": "",
+	"mainsrc": "",
+	"projects": [
+		"Source/Zoomicon.Manipulation.FMX.dproj",
+		"Source/Zoomicon.Manipulation.FMX_IDE.dproj"
+	],
+	"dependencies": {
+		"github.com/zoomicon/zoomicon.generics.delphi": ">=3.3.0",
+		"github.com/zoomicon/zoomicon.helpers.fmx.delphi": ">=3.3.0"
+	}
 }

@@ -6,7 +6,7 @@
         <Projects Include="Source\Zoomicon.Manipulation.FMX.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Source\Zoomicon.Manipulation.FMX_IDE.dproj">
+        <Projects Include="Source\dclZoomicon.Manipulation.FMX.dproj">
             <Dependencies>Source\Zoomicon.Manipulation.FMX.dproj</Dependencies>
         </Projects>
     </ItemGroup>
@@ -26,23 +26,93 @@
     <Target Name="Zoomicon_Manipulation_FMX:Make">
         <MSBuild Projects="Source\Zoomicon.Manipulation.FMX.dproj" Targets="Make"/>
     </Target>
-    <Target Name="Zoomicon_Manipulation_FMX_IDE" DependsOnTargets="Zoomicon.Manipulation.FMX">
-        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX_IDE.dproj"/>
+    <Target Name="dclZoomicon_Manipulation_FMX" DependsOnTargets="Zoomicon.Manipulation.FMX">
+        <MSBuild Projects="Source\dclZoomicon.Manipulation.FMX.dproj"/>
     </Target>
-    <Target Name="Zoomicon_Manipulation_FMX_IDE:Clean" DependsOnTargets="Zoomicon.Manipulation.FMX:Clean">
-        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX_IDE.dproj" Targets="Clean"/>
+    <Target Name="dclZoomicon_Manipulation_FMX:Clean" DependsOnTargets="Zoomicon.Manipulation.FMX:Clean">
+        <MSBuild Projects="Source\dclZoomicon.Manipulation.FMX.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="Zoomicon_Manipulation_FMX_IDE:Make" DependsOnTargets="Zoomicon.Manipulation.FMX:Make">
-        <MSBuild Projects="Source\Zoomicon.Manipulation.FMX_IDE.dproj" Targets="Make"/>
+    <Target Name="dclZoomicon_Manipulation_FMX:Make" DependsOnTargets="Zoomicon.Manipulation.FMX:Make">
+        <MSBuild Projects="Source\dclZoomicon.Manipulation.FMX.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="Zoomicon_Manipulation_FMX;Zoomicon_Manipulation_FMX_IDE"/>
+        <CallTarget Targets="Zoomicon_Manipulation_FMX;dclZoomicon_Manipulation_FMX"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Zoomicon_Manipulation_FMX:Clean;Zoomicon_Manipulation_FMX_IDE:Clean"/>
+        <CallTarget Targets="Zoomicon_Manipulation_FMX:Clean;dclZoomicon_Manipulation_FMX:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Zoomicon_Manipulation_FMX:Make;Zoomicon_Manipulation_FMX_IDE:Make"/>
+        <CallTarget Targets="Zoomicon_Manipulation_FMX:Make;dclZoomicon_Manipulation_FMX:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='Android'">
+        <BuildGroupProject Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{5FA59D31-3E92-458C-B539-3809C8A0E13C}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Android;Android64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="Source\dclZoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
+            <Configurations/>
+            <Platforms/>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+    <ItemGroup Condition="'$(BuildGroup)'=='macOS'">
+        <BuildGroupProject Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{5FA59D31-3E92-458C-B539-3809C8A0E13C}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>OSX64;OSXARM64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="Source\dclZoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
+            <Configurations/>
+            <Platforms/>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+    <ItemGroup Condition="'$(BuildGroup)'=='All Platforms'">
+        <BuildGroupProject Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{5FA59D31-3E92-458C-B539-3809C8A0E13C}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Android;Android64;iOSDevice64;iOSSimARM64;OSX64;OSXARM64;Win32;Win64;Win64x</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="Source\dclZoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+    <ItemGroup Condition="'$(BuildGroup)'=='iOS'">
+        <BuildGroupProject Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{5FA59D31-3E92-458C-B539-3809C8A0E13C}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>iOSDevice64;iOSSimARM64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="Source\dclZoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
+            <Configurations/>
+            <Platforms/>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+    <ItemGroup Condition="'$(BuildGroup)'=='Windows'">
+        <BuildGroupProject Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{5FA59D31-3E92-458C-B539-3809C8A0E13C}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64;Win64x</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="Source\dclZoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
 </Project>

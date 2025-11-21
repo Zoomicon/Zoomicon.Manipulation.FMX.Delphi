@@ -1,13 +1,13 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
-        <MainSource>Zoomicon.Manipulation.FMX_IDE.dpk</MainSource>
+        <MainSource>dclZoomicon.Manipulation.FMX.dpk</MainSource>
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
-        <ProjectName Condition="'$(ProjectName)'==''">Zoomicon.Manipulation.FMX_IDE</ProjectName>
+        <ProjectName Condition="'$(ProjectName)'==''">dclZoomicon.Manipulation.FMX</ProjectName>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
     </PropertyGroup>
@@ -87,7 +87,7 @@
         <GenPackage>true</GenPackage>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
-        <SanitizedProjectName>Zoomicon_Manipulation_FMX_IDE</SanitizedProjectName>
+        <SanitizedProjectName>dclZoomicon_Manipulation_FMX</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_CBuilderOutput>None</DCC_CBuilderOutput>
@@ -171,7 +171,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">Zoomicon.Manipulation.FMX_IDE.dpk</Source>
+                    <Source Name="MainSource">dclZoomicon.Manipulation.FMX.dpk</Source>
                 </Source>
             </Delphi.Personality>
             <Deployment Version="5">
@@ -190,9 +190,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\..\..\Public\Documents\Embarcadero\Studio\23.0\Bpl\Zoomicon.Manipulation.FMX_IDE.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\..\..\Public\Documents\Embarcadero\Studio\37.0\Bpl\dclZoomicon.Manipulation.FMX.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>Zoomicon.Manipulation.FMX_IDE.bpl</RemoteName>
+                        <RemoteName>dclZoomicon.Manipulation.FMX.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
