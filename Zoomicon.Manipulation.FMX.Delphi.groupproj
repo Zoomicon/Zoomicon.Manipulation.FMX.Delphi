@@ -129,4 +129,18 @@
             <Enabled>True</Enabled>
         </BuildGroupProject>
     </ItemGroup>
+    <ItemGroup Condition="'$(BuildGroup)'=='Linux'">
+        <BuildGroupProject Include="Source\Zoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{5FA59D31-3E92-458C-B539-3809C8A0E13C}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Linux64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="Source\dclZoomicon.Manipulation.FMX.dproj">
+            <ProjectGuid>{7AA1B996-EC27-4112-9229-5637A2591D6D}</ProjectGuid>
+            <Configurations/>
+            <Platforms/>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
 </Project>
