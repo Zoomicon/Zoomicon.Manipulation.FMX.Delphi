@@ -1,14 +1,14 @@
 {
 	"name": "Zoomicon.Manipulation.FMX",
 	"description": "Manipulation User Interface controls for Delphi FMX",
-	"version": "3.4",
+	"version": "4.0",
 	"homepage": "",
 	"mainsrc": "",
 	"projects": [
 		"Source/Zoomicon.Manipulation.FMX.dproj"
 	],
 	"dependencies": {
-		"github.com/zoomicon/zoomicon.generics.delphi": ">=3.3.0",
-		"github.com/zoomicon/zoomicon.helpers.fmx.delphi": ">=3.3.0"
+		"github.com/zoomicon/zoomicon.generics.delphi": ">=4.0.0",
+		"github.com/zoomicon/zoomicon.helpers.fmx.delphi": ">=4.0.0"
 	}
 }
