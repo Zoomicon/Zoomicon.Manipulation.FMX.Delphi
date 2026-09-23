@@ -4,6 +4,7 @@
 	"version": "4.0",
 	"homepage": "",
 	"mainsrc": "",
+	"browsingpath": "",
 	"projects": [
 		"Source/Zoomicon.Manipulation.FMX.dproj"
 	],
